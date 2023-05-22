@@ -68,21 +68,25 @@ class VkApiBackup:
         """Method uploads photos to Yandex disk"""
         try:
             photos = id_data['items']
-            folder = self._disk.create_new_folder()
+            folder_id = self._disk.create_new_folder()
 
             for item in tqdm(photos):
-                filename = self._get_filename(item)
+                new_filename = self._get_filename(item)
                 max_size = self._get_max_size(item)
                 self.photos_info.append({
-                    "file_name": filename,
+                    "file_name": new_filename,
                     "size": max_size['type']
                 })
                 photo = requests.get(max_size['url'])
                 with NamedTemporaryFile(mode='wb', delete=False) as file:
                     file.write(photo.content)
-                    name = file.name
+                    filename = file.name
                     with open(name, 'rb') as new_file:
-                        self._disk.upload_file(name, filename, new_file, folder)
-            # print('Successful upload for all photos')
+                        self._disk.upload_file(filename, new_filename, new_file, folder_id)
+
         except Exception as e:
             print(f"Error: {e}")
+
+    def write_info_to_file(self):
+        with open('photos_info.json', 'w', encoding='utf-8') as output_file:
+            json.dump(self.photos_info, output_file, indent=2)

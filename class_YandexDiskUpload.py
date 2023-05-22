@@ -23,7 +23,7 @@ class YandexDiscUpload:
         response = requests.get(upload_url, headers=headers, params=params)
         return response.json().get('href', '')
 
-    def upload_file(self, filename: str, new_filename, file, folder: str) -> None:
+    def upload_file(self, filename: str, new_filename: str, new_file, folder_id: None) -> None:
         """Upload new file to Yandex Disk"""
         href = self._get_link_to_upload(self._file_path + new_filename)
-        requests.put(href, data=file)
+        requests.put(href, data=new_file)
