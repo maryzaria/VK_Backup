@@ -1,7 +1,7 @@
-import os
 from datetime import datetime
 from tempfile import NamedTemporaryFile
 from tqdm import tqdm
+import json
 
 import requests
 
@@ -81,7 +81,7 @@ class VkApiBackup:
                 with NamedTemporaryFile(mode='wb', delete=False) as file:
                     file.write(photo.content)
                     filename = file.name
-                    with open(name, 'rb') as new_file:
+                    with open(filename, 'rb') as new_file:
                         self._disk.upload_file(filename, new_filename, new_file, folder_id)
 
         except Exception as e:
