@@ -38,11 +38,11 @@ class VkApiBackup:
             'count': count,
             **self._params
         }
-        try:
-            response = requests.get(url, params=params)
-            photos = response.json()
+        response = requests.get(url, params=params)
+        photos = response.json()
+        if 'response' in photos:
             return photos['response']
-        except KeyError:
+        else:
             print("Error: can't download photo from private profile/album")
 
     def _get_filename(self, item: dict) -> str:
@@ -52,7 +52,7 @@ class VkApiBackup:
             upload_date = datetime.fromtimestamp(item['date']).strftime("%d.%m.%Y")
             name = f'{name}_{upload_date}'
         while name in self._names:
-            name += f'_{str(x)}'
+            name += f'_{x}'
             x += 1
         self._names.append(name)
         return name + '.png'
