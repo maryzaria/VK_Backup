@@ -4,9 +4,11 @@ from dotenv import load_dotenv
 from VK_backup import VkApiBackup
 
 
-if __name__ == '__main__':
-    load_dotenv()
-    my_vk_token = os.getenv('VK_API_TOKEN')
+load_dotenv()
+my_vk_token = os.getenv('VK_API_TOKEN')
+
+
+def main():
     # my_id = '55242725'
     user_id = str(input('Введите id пользователя: '))
     your_yd_token = str(input('Введите токен Яндекс диска или пустую строку, если загружаете на Google диск: '))
@@ -15,3 +17,8 @@ if __name__ == '__main__':
     if isinstance(data, dict):
         vk.upload_file_to_disk(data)
         vk.write_info_to_file()
+
+
+if __name__ == '__main__':
+    main()
+
